@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.e6c13ad2.css",
-    "main.js": "/static/js/main.cbeac427.js",
-    "static/js/453.ed3810f9.chunk.js": "/static/js/453.ed3810f9.chunk.js",
-    "static/media/logo.png": "/static/media/logo.bcdd86f4303248d7381f.png",
-    "index.html": "/index.html",
-    "main.e6c13ad2.css.map": "/static/css/main.e6c13ad2.css.map",
-    "main.cbeac427.js.map": "/static/js/main.cbeac427.js.map",
-    "453.ed3810f9.chunk.js.map": "/static/js/453.ed3810f9.chunk.js.map"
+    "main.css": "/EVfiremonitor.github.io/static/css/main.e6c13ad2.css",
+    "main.js": "/EVfiremonitor.github.io/static/js/main.e9dd303d.js",
+    "static/js/453.ed3810f9.chunk.js": "/EVfiremonitor.github.io/static/js/453.ed3810f9.chunk.js",
+    "static/media/logo.png": "/EVfiremonitor.github.io/static/media/logo.bcdd86f4303248d7381f.png",
+    "index.html": "/EVfiremonitor.github.io/index.html",
+    "main.e6c13ad2.css.map": "/EVfiremonitor.github.io/static/css/main.e6c13ad2.css.map",
+    "main.e9dd303d.js.map": "/EVfiremonitor.github.io/static/js/main.e9dd303d.js.map",
+    "453.ed3810f9.chunk.js.map": "/EVfiremonitor.github.io/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.cbeac427.js"
+    "static/js/main.e9dd303d.js"
   ]
 }
