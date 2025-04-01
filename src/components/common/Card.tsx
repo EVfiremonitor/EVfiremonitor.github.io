@@ -8,14 +8,18 @@ interface CardStyleProps {
 }
 
 const CardWrapper = styled.div<CardStyleProps>`
-  background-color: ${props => props.isActive ? props.theme.colors.background.secondary : props.theme.colors.background.dark};
-  border: 1px solid ${props => props.isDetected ? props.theme.colors.status.danger : props.theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.md};
-  padding: ${({ theme }) => theme.spacing.md};
-  color: ${({ theme }) => theme.colors.text.primary};
+  background-color: ${props => props.isActive ? '#0A2647' : '#1B2430'};
+  border: 1px solid ${props => props.isDetected ? '#FF4B2B' : '#2C3333'};
+  border-radius: 8px;
+  padding: 1rem;
+  color: white;
   min-width: 200px;
-  box-shadow: ${({ theme }) => theme.shadows.lg};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
+  
+  ${props => props.isDetected && `
+    box-shadow: 0 0 15px rgba(255, 75, 43, 0.5);
+  `}
 `;
 
 interface CardProps extends BaseProps, WithChildren, CardStyleProps {}

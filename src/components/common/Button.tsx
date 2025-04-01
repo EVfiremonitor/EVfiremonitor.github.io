@@ -7,42 +7,42 @@ interface StyledButtonProps {
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: 8px;
 
   ${props => {
     switch (props.variant) {
       case 'warning':
         return `
-          background-color: ${props.theme.colors.status.warning};
-          color: ${props.theme.colors.text.primary};
+          background-color: #FFD93D;
+          color: #000000;
           border: none;
           &:hover {
-            background-color: ${props.theme.colors.button.hover};
+            background-color: #FFC436;
           }
         `;
       case 'danger':
         return `
-          background-color: ${props.theme.colors.status.danger};
-          color: ${props.theme.colors.text.primary};
+          background-color: #FF4B2B;
+          color: white;
           border: none;
           &:hover {
-            background-color: ${props.theme.colors.button.hover};
+            background-color: #FF6B3D;
           }
         `;
       default:
         return `
-          background-color: ${props.theme.colors.status.normal};
-          color: ${props.theme.colors.text.primary};
+          background-color: #4CAF50;
+          color: white;
           border: none;
           &:hover {
-            background-color: ${props.theme.colors.button.hover};
+            background-color: #45a049;
           }
         `;
     }
@@ -51,7 +51,6 @@ const StyledButton = styled.button<StyledButtonProps>`
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background-color: ${({ theme }) => theme.colors.button.disabled};
   }
 `;
 

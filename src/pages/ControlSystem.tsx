@@ -4,25 +4,32 @@ import Header from '../components/layout/Header';
 import Sidebar from '../components/layout/Sidebar';
 import StatusIndicators from '../components/dashboard/StatusIndicators';
 import ParkingCell from '../components/dashboard/ParkingCell';
-import { 
-  SystemStatusData, 
-  ParkingData, 
-  FireDetectionData, 
-  TemperatureSettingsData 
-} from '../types/parking';
+import { SystemStatusData, ParkingData, TemperatureSettings, FireDetectionData } from '../types/parking';
 import { BaseProps } from '../types/common';
 import Layout from '../components/layout/Layout';
 import { BREAKPOINTS } from '../styles/breakpoints';
-import ParkingGrid from '../components/ParkingGrid';
-import TemperatureSettingsComponent from '../components/settings/TemperatureSettings';
 
 const StatusSection = styled.section`
   background-color: rgba(10, 38, 71, 0.5);
   border-radius: 12px;
-  padding: 8px;
-  margin: 1rem;
+  padding: 1.5rem;
   margin-bottom: 2rem;
   backdrop-filter: blur(8px);
+`;
+
+const ParkingGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  
+  @media (min-width: ${BREAKPOINTS.desktop}) {
+    grid-template-columns: repeat(3, 1fr); // Desktop: 3열
+  }
+  
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    grid-template-columns: 1fr; // Mobile: 1열
+    gap: 1rem;
+  }
 `;
 
 interface ControlSystemProps extends BaseProps {}
@@ -36,75 +43,30 @@ const ControlSystem: React.FC = () => {
     server: 'Normal'
   });
 
-  const [parkingSpaces, setParkingSpaces] = useState<ParkingData[]>([
-    {
-      id: 1,
-      temperature: 45,
-      isOpen: false,
-      isActive: true,
-      isFireDetected: false
-    },
-    {
-      id: 2,
-      temperature: 55,
-      isOpen: false,
-      isActive: true,
-      isFireDetected: false
-    },
-    {
-      id: 3,
-      temperature: 60,
-      isOpen: true,
-      isActive: true,
-      isFireDetected: false
-    },
-    {
-      id: 4,
-      temperature: null,
-      isOpen: false,
-      isActive: false,
-      isFireDetected: false
-    },
-    {
-      id: 5,
-      temperature: null,
-      isOpen: false,
-      isActive: false,
-      isFireDetected: false
-    }
-
-    // ... 필요한 만큼 추가
+  const [parkingData, setParkingData] = useState<ParkingData[]>([
+    { id: 1, temperature: null, isActive: false },
+    { id: 2, temperature: 32, isOpen: true, isActive: true },
+    { id: 3, temperature: 72, isOpen: true, isActive: true, isFireDetected: true },
+    { id: 4, temperature: 34, isOpen: true, isActive: true },
+    { id: 5, temperature: 35, isOpen: true, isActive: true },
+    { id: 6, temperature: null, isActive: false },
+    { id: 7, temperature: null, isActive: false }
   ]);
 
-  const [temperatureSettings] = useState<TemperatureSettingsData>({
+  const [temperatureSettings] = useState<TemperatureSettings>({
     lightAlarm: 45,
     mediumAlarm: 55,
-    fireSuppression: 60
+    fireSuppression: 65
   });
 
   const [fireDetection] = useState<FireDetectionData>({
-    detectedCount: 0,
+    detectedCount: 72,
     averageTemperature: 32
   });
 
   const handleForceValveClose = (): void => {
-    // 모든 주차 공간의 밸브를 CLOSE 상태로 변경
-    setParkingSpaces(prevSpaces =>
-      prevSpaces.map(space => ({
-        ...space,
-        isOpen: false // 모든 공간을 CLOSED로 설정
-      }))
-    );
-  };
-
-  const handleToggle = (id: number) => {
-    setParkingSpaces(prevSpaces =>
-      prevSpaces.map(space =>
-        space.id === id
-          ? { ...space, isOpen: !space.isOpen }
-          : space
-      )
-    );
+    // 밸브 강제 종료 로직 구현
+    console.log('Force valve close');
   };
 
   return (
@@ -112,23 +74,19 @@ const ControlSystem: React.FC = () => {
       isOperating={systemStatus.isOperating}
       onForceValveClose={handleForceValveClose}
     >
-      {/* 센서, 밸브, 서버 상태 표시창 */}
       <StatusSection>
         <StatusIndicators 
           temperatureSensor1Status={systemStatus.temperatureSensor1}
+          temperatureSensor2Status={systemStatus.temperatureSensor2}
           waterValveStatus={systemStatus.waterValve}
           serverStatus={systemStatus.server}
         />
       </StatusSection>
-
-      {/* 주차면 그리드 */}
       <ParkingGrid>
-        {parkingSpaces.map(space => (
+        {parkingData.map(parking => (
           <ParkingCell
-            key={space.id}
-            id={space.id}
-            isActive={space.isActive}
-            onToggle={handleToggle}
+            key={parking.id}
+            {...parking}
           />
         ))}
       </ParkingGrid>

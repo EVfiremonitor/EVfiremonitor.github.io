@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import React from 'react';
 import styled from 'styled-components';
 import Card from '../common/Card';
 import TemperatureDisplay from './TemperatureDisplay';
 import { BaseProps } from '../../types/common';
+import { ParkingData } from '../../types/parking';
 
 const ParkingCellContainer = styled(Card)`
   width: 100%;
@@ -18,34 +17,21 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  margin-bottom: 1rem;
 `;
 
 const Title = styled.h3`
   margin: 0;
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.colors.text.primary};
+  color: white;
 `;
 
-const Status = styled.button<StatusProps>`
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  background-color: ${({ theme, isOpen }) => 
-    isOpen ? theme.colors.status.normal : theme.colors.status.danger};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  color: ${({ theme }) => theme.colors.text.primary};
+const Status = styled.div<StatusProps>`
+  padding: 0.5rem 1rem;
+  background-color: ${props => props.isOpen ? '#4CAF50' : '#FF4B2B'};
+  border-radius: 4px;
+  color: white;
   font-weight: bold;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
 `;
 
 const Content = styled.div`
@@ -54,65 +40,36 @@ const Content = styled.div`
   align-items: center;
 `;
 
-const FireAlert = styled.div<{ blink: boolean }>`
-  background-color: ${({ theme, blink }) => 
-    blink ? theme.colors.status.danger : theme.colors.status.warning};
-  color: ${({ theme }) => theme.colors.text.primary};
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
+const FireAlert = styled.div`
+  background-color: #FF4B2B;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
   font-weight: bold;
-  margin-top: ${({ theme }) => theme.spacing.md};
+  margin-top: 1rem;
   text-align: center;
-  animation: ${({ blink }) => blink ? 'blinkAnimation 1s infinite' : 'none'};
-
-  @keyframes blinkAnimation {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-  }
 `;
 
-interface ParkingCellProps extends BaseProps {
-  id: number;
-  isActive?: boolean;
-  onToggle?: (id: number) => void;
-}
+interface ParkingCellProps extends ParkingData, BaseProps {}
 
 const ParkingCell: React.FC<ParkingCellProps> = ({
   id,
+  temperature,
+  isOpen = true,
   isActive = true,
-  onToggle
+  isFireDetected = false
 }) => {
-  // Redux에서 주차면 정보 가져오기
-  const parkingSpace = useSelector((state: RootState) => 
-    state.parking.spaces.find(space => space.id === id)
-  );
-
-  const handleToggle = () => {
-    if (onToggle) {
-      onToggle(id);
-    }
-  };
-
-  if (!parkingSpace) return null;
-
   return (
-    <ParkingCellContainer isActive={isActive} isDetected={parkingSpace.isFireDetected}>
+    <ParkingCellContainer isActive={isActive} isDetected={isFireDetected}>
       <Header>
         <Title>Parking {id}</Title>
-        <Status 
-          isOpen={parkingSpace.isOpen} 
-          onClick={handleToggle}
-          aria-label={parkingSpace.isOpen ? 'Close parking space' : 'Open parking space'}
-        >
-          {parkingSpace.isOpen ? 'OPEN' : 'CLOSED'}
-        </Status>
+        <Status isOpen={isOpen}>{isOpen ? 'OPEN' : 'CLOSED'}</Status>
       </Header>
       <Content>
-        <TemperatureDisplay temperature={parkingSpace.temperature} />
+        <TemperatureDisplay temperature={temperature} />
       </Content>
-      {parkingSpace.isFireDetected && (
-        <FireAlert blink={parkingSpace.isFireDetected}>FIRE DETECTED</FireAlert>
+      {isFireDetected && (
+        <FireAlert>FIRE DETECTED</FireAlert>
       )}
     </ParkingCellContainer>
   );
