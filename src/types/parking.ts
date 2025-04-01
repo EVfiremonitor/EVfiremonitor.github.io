@@ -16,7 +16,7 @@ export interface SystemStatusData {
   server: SystemStatus;
 }
 
-export interface TemperatureSettings {
+export interface TemperatureSettingsData {
   lightAlarm: number;
   mediumAlarm: number;
   fireSuppression: number;

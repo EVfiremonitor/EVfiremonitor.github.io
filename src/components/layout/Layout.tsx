@@ -13,7 +13,7 @@ const LayoutContainer = styled.div`
     "header header"
     "sidebar main";
   min-height: 100vh;
-  background-color: #1B2430;
+  background-color: ${({ theme }) => theme.colors.background.primary};
   
   @media (max-width: ${BREAKPOINTS.mobile}) {
     grid-template-columns: 1fr;
@@ -37,7 +37,7 @@ const SidebarWrapper = styled.div<{ isOpen: boolean }>`
     transform: translateX(${props => props.isOpen ? '0' : '-100%'});
     transition: transform 0.3s ease;
     z-index: 100;
-    box-shadow: ${props => props.isOpen ? '2px 0 8px rgba(0, 0, 0, 0.2)' : 'none'};
+    box-shadow: ${props => props.isOpen ? props.theme.shadows.md : 'none'};
   }
 `;
 
@@ -51,18 +51,18 @@ const Overlay = styled.div<{ isOpen: boolean }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${({ theme }) => theme.colors.background.overlay};
     z-index: 90;
   }
 `;
 
 const MainContainer = styled.main`
   grid-area: main;
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing.xl};
   overflow-y: auto;
   
   @media (max-width: ${BREAKPOINTS.mobile}) {
-    padding: 1rem;
+    padding: ${({ theme }) => theme.spacing.md};
   }
   
   &::-webkit-scrollbar {
@@ -70,8 +70,8 @@ const MainContainer = styled.main`
   }
   
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
+    background-color: ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.borderRadius.sm};
   }
 `;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Button from '../common/Button';
 import logo from '../../assets/logo.png';
 import { BaseProps } from '../../types/common';
@@ -13,25 +13,35 @@ const HeaderContainer = styled.header`
   align-items: center;
   padding: 0 2rem;
   height: 70px;
-  background-color: #0A2647;
+  background-color: ${({ theme }) => theme.colors.background.primary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  color: ${({ theme }) => theme.colors.text.primary};
   
   @media (max-width: ${BREAKPOINTS.mobile}) {
     height: 60px;
     padding: 0 1rem;
+  }
+
+  h1 {
+    color: ${({ theme }) => theme.colors.text.primary};
   }
 `;
 
 const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: ${({ theme }) => theme.spacing.md};
   
   img {
     height: 36px;
     
     @media (max-width: ${BREAKPOINTS.mobile}) {
-      height: 28px;
+      height: 24px;
     }
+  }
+  
+  @media (max-width: ${BREAKPOINTS.mobile}) {
+    gap: ${({ theme }) => theme.spacing.sm};
   }
 `;
 
@@ -40,7 +50,7 @@ const Title = styled.h1`
   font-size: 1.8rem;
   
   @media (max-width: ${BREAKPOINTS.mobile}) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -58,10 +68,36 @@ interface StatusIndicatorProps {
   isOperating: boolean;
 }
 
+// 점멸 애니메이션 추가
+const blinkAnimation = keyframes`
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+`;
+
 const StatusIndicator = styled.div<StatusIndicatorProps>`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: ${({ theme }) => theme.spacing.sm};
+  
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: ${({ theme }) => theme.borderRadius.full};
+    background-color: ${({ theme, isOperating }) => 
+      isOperating ? theme.colors.status.normal : theme.colors.status.danger};
+    animation: ${blinkAnimation} 2s ease-in-out infinite;
+  }
+
+  span {
+    color: ${({ theme, isOperating }) => 
+      isOperating ? theme.colors.status.normal : theme.colors.status.danger};
+  }
   
   @media (max-width: ${BREAKPOINTS.mobile}) {
     span {
@@ -69,11 +105,8 @@ const StatusIndicator = styled.div<StatusIndicatorProps>`
     }
     
     &::before {
-      content: '';
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background-color: ${props => props.isOperating ? '#4CAF50' : '#FF4B2B'};
+      width: 10px;
+      height: 10px;
     }
   }
 `;
